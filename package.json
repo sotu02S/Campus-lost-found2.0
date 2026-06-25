@@ -1,0 +1,15 @@
+{
+  "name": "campus-lost-and-found",
+  "version": "1.0.0",
+  "description": "Campus Lost and Found Web Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {}
+}
