@@ -40,9 +40,9 @@ const sendJSON = (res, statusCode, data) => {
     res.end(JSON.stringify(data));
 };
 
-// Helper to serve static files
+// Helper to serve static files from public directory
 const serveStaticFile = (fileName, contentType, res) => {
-    const filePath = path.join(__dirname, fileName);
+    const filePath = path.join(__dirname, 'public', fileName);
     fs.readFile(filePath, (err, data) => {
         if (err) {
             res.writeHead(404, { "Content-Type": "text/plain" });

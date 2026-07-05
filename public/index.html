@@ -1,244 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Lost & Found | Premium Student Portal</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Campus Lost & Found — Report and discover lost or found items across campus.">
+  <meta name="theme-color" content="#07090f">
+  <title>Campus Lost &amp; Found | Student Portal</title>
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background decorative blur shapes -->
-    <div class="glow-bg glow-1"></div>
-    <div class="glow-bg glow-2"></div>
 
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <span class="logo-emoji">🎓</span>
-                <span class="logo-text">Campus <span class="accent-text">Lost & Found</span></span>
-            </div>
-            <nav>
-                <button id="postItemBtn" class="btn btn-primary-gradient">✨ Post New Item</button>
-            </nav>
-        </div>
-    </header>
+  <!-- Ambient background glows -->
+  <div class="glow-bg glow-1" aria-hidden="true"></div>
+  <div class="glow-bg glow-2" aria-hidden="true"></div>
+  <div class="glow-bg glow-3" aria-hidden="true"></div>
 
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Search and Filter Section -->
-        <section class="search-section">
-            <div class="section-header">
-                <h2>🔍 Find Items</h2>
-                <p class="section-subheader">Search lost and found listings across campus departments</p>
-            </div>
-            <div class="search-controls">
-                <div class="search-input-wrapper">
-                    <input type="text" id="searchInput" placeholder="Search by description, keywords, location..." class="search-input">
-                    <span class="search-icon">🔎</span>
-                </div>
-                
-                <select id="typeFilter" class="filter-select">
-                    <option value="all">🔍 All Types</option>
-                    <option value="lost">🔴 Lost Items</option>
-                    <option value="found">🟢 Found Items</option>
-                </select>
+  <!-- ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ -->
+  <header role="banner">
+    <div class="container header-container">
 
-                <select id="categoryFilter" class="filter-select">
-                    <option value="all">📁 All Categories</option>
-                    <option value="electronics">💻 Electronics</option>
-                    <option value="clothing">👕 Clothing</option>
-                    <option value="books">📚 Books & Stationery</option>
-                    <option value="accessories">🎒 Accessories</option>
-                    <option value="keys">🔑 Keys & Cards</option>
-                    <option value="other">📦 Other</option>
-                </select>
+      <a href="/" class="logo" aria-label="Campus Lost &amp; Found — home">
+        <span class="logo-emoji" aria-hidden="true">🎓</span>
+        <span class="logo-text">Campus <span class="accent-text">Lost &amp; Found</span></span>
+      </a>
 
-                <select id="statusFilter" class="filter-select">
-                    <option value="all">🔄 All Statuses</option>
-                    <option value="unclaimed">⏳ Unclaimed</option>
-                    <option value="claimed">✅ Claimed</option>
-                </select>
+      <!-- Desktop nav -->
+      <nav class="nav-desktop" aria-label="Main navigation">
+        <button id="postItemBtn" class="btn btn-primary-gradient" aria-haspopup="dialog">
+          <span aria-hidden="true">✨</span>
+          <span class="btn-text">Post New Item</span>
+        </button>
+      </nav>
 
-                <select id="sortBy" class="filter-select">
-                    <option value="newest">📅 Newest First</option>
-                    <option value="oldest">📅 Oldest First</option>
-                    <option value="alphabetical">🔤 Title (A-Z)</option>
-                </select>
+      <!-- Mobile hamburger -->
+      <button class="nav-mobile-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-                <button id="clearFilters" class="btn btn-secondary">Clear Filters</button>
-            </div>
-        </section>
+    </div>
+  </header>
 
-        <!-- Items Grid -->
-        <section class="items-section">
-            <div id="itemsGrid" class="items-grid">
-                <!-- Skeleton cards loaded dynamically or loaded via JS -->
-            </div>
-        </section>
-    </main>
+  <!-- Mobile nav drawer -->
+  <div id="navDrawer" class="nav-drawer" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+    <button id="postItemBtnMobile" class="btn btn-primary-gradient" aria-haspopup="dialog">
+      <span aria-hidden="true">✨</span>
+      <span class="btn-text">Post New Item</span>
+    </button>
+  </div>
 
-    <!-- Post Item Modal -->
-    <div id="postModal" class="modal">
-        <div class="modal-content">
-            <span class="close" data-modal="postModal">&times;</span>
-            <h2>✨ Post an Item</h2>
-            <p class="modal-subtitle">List a lost or found item to notify the campus community.</p>
-            
-            <form id="postItemForm">
-                <div class="form-group">
-                    <label>Item Type *</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="type" value="lost" required checked>
-                            <span class="radio-custom badge-lost">Lost</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="type" value="found" required>
-                            <span class="radio-custom badge-found">Found</span>
-                        </label>
-                    </div>
-                </div>
+  <!-- ═══════════════════════════════════════
+       MAIN
+       ═══════════════════════════════════════ -->
+  <main class="container" id="main-content" role="main">
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="title">Title *</label>
-                        <input type="text" id="title" name="title" required placeholder="e.g., Space Gray Macbook Pro">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="category">Category *</label>
-                        <select id="category" name="category" required>
-                            <option value="">Select a category</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="books">Books & Stationery</option>
-                            <option value="accessories">Accessories</option>
-                            <option value="keys">Keys & Cards</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Detailed Description *</label>
-                    <textarea id="description" name="description" required rows="3" placeholder="Describe unique markings, color, condition, or contents..."></textarea>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="location">Location *</label>
-                        <input type="text" id="location" name="location" required placeholder="e.g., Library 2nd Floor, Room 204">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="date">Date Lost / Found *</label>
-                        <input type="date" id="date" name="date" required>
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="contactName">Your Name *</label>
-                        <input type="text" id="contactName" name="contactName" required placeholder="Full Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contactEmail">Your Email *</label>
-                        <input type="email" id="contactEmail" name="contactEmail" required placeholder="your.email@campus.edu">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Photo (Optional)</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="photo" name="photo" accept="image/*">
-                        <div class="file-upload-label">
-                            <span class="upload-icon">📸</span>
-                            <span class="upload-text">Choose image or drag and drop here</span>
-                            <small class="upload-limit">Max size: 5MB</small>
-                        </div>
-                    </div>
-                    <!-- Live Image Preview -->
-                    <div id="imagePreviewContainer" class="image-preview-container" style="display: none;">
-                        <img id="imagePreview" src="" alt="Selected Preview">
-                        <button type="button" id="removePreviewBtn" class="remove-preview-btn" title="Remove photo">&times;</button>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary-gradient">Publish Listing</button>
-                    <button type="button" class="btn btn-secondary" id="cancelPost">Cancel</button>
-                </div>
-            </form>
-        </div>
+    <!-- Stats bar -->
+    <div class="stats-bar" id="statsBar" aria-live="polite" aria-label="Item statistics">
+      <span class="stat-chip all">
+        <span class="stat-num" id="statTotal">—</span> Total
+      </span>
+      <span class="stat-chip lost">
+        <span aria-hidden="true">🔴</span>
+        <span class="stat-num" id="statLost">—</span> Lost
+      </span>
+      <span class="stat-chip found">
+        <span aria-hidden="true">🟢</span>
+        <span class="stat-num" id="statFound">—</span> Found
+      </span>
+      <span class="stat-chip result" id="statResultChip">
+        <span aria-hidden="true">🔍</span>
+        <span class="stat-num" id="statResults">—</span> Showing
+      </span>
     </div>
 
-    <!-- Item Detail Modal -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content modal-large">
-            <span class="close" data-modal="detailModal">&times;</span>
-            <div id="itemDetail"></div>
+    <!-- Search & Filters -->
+    <section class="search-section" aria-label="Search and filter items">
+      <div class="section-header">
+        <h2>🔍 Find Items</h2>
+        <p class="section-subheader">Search lost and found listings across campus</p>
+      </div>
+
+      <div class="search-controls" role="search">
+
+        <div class="search-input-wrapper">
+          <label for="searchInput" class="sr-only">Search items</label>
+          <input
+            type="search"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search by title, description, location…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search items"
+          >
+          <span class="search-icon" aria-hidden="true">🔎</span>
         </div>
-    </div>
 
-    <!-- Message Modal -->
-    <div id="messageModal" class="modal">
-        <div class="modal-content">
-            <span class="close" data-modal="messageModal">&times;</span>
-            <h2>✉️ Contact Owner</h2>
-            <p class="modal-subtitle">Send a secure message directly to the poster of this item.</p>
-            <form id="messageForm">
-                <div class="form-group">
-                    <label for="senderName">Your Name *</label>
-                    <input type="text" id="senderName" name="senderName" required placeholder="Your full name">
-                </div>
-
-                <div class="form-group">
-                    <label for="senderEmail">Your Email *</label>
-                    <input type="email" id="senderEmail" name="senderEmail" required placeholder="your.email@campus.edu">
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Message *</label>
-                    <textarea id="message" name="message" required rows="4" placeholder="Type details about how you can meet, verify ownership, or return the item..."></textarea>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary-gradient">Send Secure Message</button>
-                    <button type="button" class="btn btn-secondary" id="cancelMessage">Cancel</button>
-                </div>
-            </form>
+        <div>
+          <label for="typeFilter" class="sr-only">Filter by type</label>
+          <select id="typeFilter" class="filter-select" aria-label="Filter by type">
+            <option value="all">🔍 All Types</option>
+            <option value="lost">🔴 Lost</option>
+            <option value="found">🟢 Found</option>
+          </select>
         </div>
-    </div>
 
-    <!-- Claim Confirmation Modal (Premium replacement for window.prompt) -->
-    <div id="claimModal" class="modal">
-        <div class="modal-content">
-            <span class="close" data-modal="claimModal">&times;</span>
-            <h2>🔑 Confirm Item Claim</h2>
-            <p class="modal-subtitle">To mark this item as claimed, verify ownership by entering the exact email address used to post it.</p>
-            <form id="claimForm">
-                <div class="form-group">
-                    <label for="claimEmail">Verification Email *</label>
-                    <input type="email" id="claimEmail" name="claimEmail" required placeholder="owner.email@campus.edu">
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-success-gradient">Confirm & Resolve Claim</button>
-                    <button type="button" class="btn btn-secondary" id="cancelClaim">Cancel</button>
-                </div>
-            </form>
+        <div>
+          <label for="categoryFilter" class="sr-only">Filter by category</label>
+          <select id="categoryFilter" class="filter-select" aria-label="Filter by category">
+            <option value="all">📁 All Categories</option>
+            <option value="electronics">💻 Electronics</option>
+            <option value="clothing">👕 Clothing</option>
+            <option value="books">📚 Books &amp; Stationery</option>
+            <option value="accessories">🎒 Accessories</option>
+            <option value="keys">🔑 Keys &amp; Cards</option>
+            <option value="other">📦 Other</option>
+          </select>
         </div>
+
+        <div>
+          <label for="statusFilter" class="sr-only">Filter by status</label>
+          <select id="statusFilter" class="filter-select" aria-label="Filter by status">
+            <option value="all">🔄 All Statuses</option>
+            <option value="unclaimed">⏳ Unclaimed</option>
+            <option value="claimed">✅ Claimed</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="sortBy" class="sr-only">Sort items</label>
+          <select id="sortBy" class="filter-select" aria-label="Sort items">
+            <option value="newest">📅 Newest First</option>
+            <option value="oldest">📅 Oldest First</option>
+            <option value="alphabetical">🔤 A–Z</option>
+          </select>
+        </div>
+
+        <button id="clearFilters" class="btn btn-secondary" type="button" aria-label="Clear all filters">
+          Clear
+        </button>
+
+      </div>
+    </section>
+
+    <!-- Items grid -->
+    <section class="items-section" aria-label="Item listings" aria-live="polite">
+      <div id="itemsGrid" class="items-grid" role="list"></div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <p>Campus Lost &amp; Found &copy; <span id="footerYear"></span> &nbsp;·&nbsp; Built for the campus community</p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       MODAL — Post Item
+       ═══════════════════════════════════════ -->
+  <div id="postModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="postModalTitle" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="postModal" aria-label="Close dialog">&#x2715;</button>
+      <h2 id="postModalTitle">✨ Post an Item</h2>
+      <p class="modal-subtitle">List a lost or found item to notify the campus community.</p>
+
+      <form id="postItemForm" novalidate>
+
+        <div class="form-group">
+          <label>Item Type *</label>
+          <div class="radio-group" role="radiogroup" aria-required="true">
+            <label class="radio-label">
+              <input type="radio" name="type" value="lost" required checked>
+              <span class="radio-custom badge-lost">🔴 Lost</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="type" value="found" required>
+              <span class="radio-custom badge-found">🟢 Found</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" name="title" required maxlength="200"
+              placeholder="e.g., Space Gray MacBook Pro" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="category">Category *</label>
+            <select id="category" name="category" required>
+              <option value="">Select category…</option>
+              <option value="electronics">💻 Electronics</option>
+              <option value="clothing">👕 Clothing</option>
+              <option value="books">📚 Books &amp; Stationery</option>
+              <option value="accessories">🎒 Accessories</option>
+              <option value="keys">🔑 Keys &amp; Cards</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description *</label>
+          <textarea id="description" name="description" required rows="3"
+            placeholder="Describe colour, brand, unique markings, contents…" maxlength="1000"></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="location">Location *</label>
+            <input type="text" id="location" name="location" required maxlength="200"
+              placeholder="e.g., Library 2nd Floor, Room 204">
+          </div>
+          <div class="form-group">
+            <label for="date">Date Lost / Found *</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="contactName">Your Name *</label>
+            <input type="text" id="contactName" name="contactName" required maxlength="120"
+              placeholder="Full name" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Your Email *</label>
+            <input type="email" id="contactEmail" name="contactEmail" required maxlength="200"
+              placeholder="you@campus.edu" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Photo <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+          <div class="file-upload-wrapper" id="fileUploadWrapper" role="button" tabindex="0" aria-label="Upload photo">
+            <input type="file" id="photo" name="photo" accept="image/*" aria-label="Choose photo">
+            <span class="upload-icon" aria-hidden="true">📸</span>
+            <span class="upload-text">Tap to choose or drag an image here</span>
+            <small class="upload-limit">JPG, PNG, WEBP — max 5 MB</small>
+          </div>
+          <div id="imagePreviewContainer" class="image-preview-container" style="display:none;" role="img" aria-label="Selected photo preview">
+            <img id="imagePreview" src="" alt="Preview of selected photo">
+            <button type="button" id="removePreviewBtn" class="remove-preview-btn" aria-label="Remove selected photo">&#x2715;</button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary-gradient" id="submitPostBtn">
+            <span class="btn-text">Publish Listing</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelPost">Cancel</button>
+        </div>
+
+      </form>
     </div>
+  </div>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="toast-container"></div>
+  <!-- ═══════════════════════════════════════
+       MODAL — Item Detail
+       ═══════════════════════════════════════ -->
+  <div id="detailModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle" aria-hidden="true">
+    <div class="modal-content modal-large">
+      <button class="modal-close" data-modal="detailModal" aria-label="Close dialog">&#x2715;</button>
+      <div id="itemDetail"></div>
+    </div>
+  </div>
 
-    <script src="app.js"></script>
+  <!-- ═══════════════════════════════════════
+       MODAL — Contact Owner
+       ═══════════════════════════════════════ -->
+  <div id="messageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="messageModal" aria-label="Close dialog">&#x2715;</button>
+      <h2 id="messageModalTitle">✉️ Contact Owner</h2>
+      <p class="modal-subtitle">Send a message directly to the person who posted this item.</p>
+
+      <form id="messageForm" novalidate>
+        <div class="form-group">
+          <label for="senderName">Your Name *</label>
+          <input type="text" id="senderName" name="senderName" required maxlength="120"
+            placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="senderEmail">Your Email *</label>
+          <input type="email" id="senderEmail" name="senderEmail" required maxlength="200"
+            placeholder="you@campus.edu" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" required rows="4" maxlength="2000"
+            placeholder="Describe how you can meet, verify ownership, or return the item…"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary-gradient" id="submitMessageBtn">
+            <span class="btn-text">Send Message</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelMessage">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MODAL — Claim Item
+       ═══════════════════════════════════════ -->
+  <div id="claimModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="claimModalTitle" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" data-modal="claimModal" aria-label="Close dialog">&#x2715;</button>
+      <h2 id="claimModalTitle">🔑 Confirm Claim</h2>
+      <p class="modal-subtitle">Enter the exact email address used when this item was posted to verify ownership.</p>
+
+      <form id="claimForm" novalidate>
+        <div class="form-group">
+          <label for="claimEmail">Verification Email *</label>
+          <input type="email" id="claimEmail" name="claimEmail" required maxlength="200"
+            placeholder="owner@campus.edu" autocomplete="email">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success-gradient" id="submitClaimBtn">
+            <span class="btn-text">✔ Confirm &amp; Mark Claimed</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelClaim">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toastContainer" class="toast-container" aria-live="assertive" aria-atomic="true" role="status"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
